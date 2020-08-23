@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Listing 3.1</title>
+    <script type="text/javascript" src="../scripts/assert.js"></script>
+    <link href="../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      function isNimble(){ return true; }                            //#1
+
+      assert(typeof window.isNimble === "function",                  //#2
+            "isNimble() defined");
+      assert(isNimble.name === "isNimble",
+            "isNimble() has a name");
+
+
+      var canFly = function(){ return true; };                       //#3
+
+      assert(typeof window.canFly === "function",                    //#4
+             "canFly() defined");
+      assert(canFly().name === undefined,
+             "canFly()'s name is "+ canFly().name );
+
+      assert(canFly.name === 'canFly',
+             "canFly()'s name is 'canFly' " );
+
+      /*
+      在JS语法中，如果先声明变量var XXX，再用XXX引用匿名函数的时候，
+      XXX.name的属性依旧是'XXX'
+      但如果是给与window对象中的一个属性赋值匿名函数时，'属性.name'的值则为空，即''。
+      In JS,if a var XXX hae been difined,then if it attachs 
+      an anonymous function,the XXX.name is also will be 'XXX'
+      */
+
+
+      window.isDeadly = function(){ return true; };                  //#5
+
+      assert(typeof window.isDeadly === "function",                  //#6
+             "isDeadly() defined");
+
+      function outer(){                                              //#7
+        assert(typeof inner === "function",
+               "inner() in scope before declaration");
+        function inner(){}
+        assert(typeof inner === "function",
+              "inner() in scope after declaration");
+        assert(window.inner === undefined,
+               "inner() not in global scope");
+      }
+
+      outer();                                                       //#8
+      assert(window.inner === undefined,
+             "inner() still not in global scope");
+
+      window.wieldsSword = function() { return true; };  //#9
+
+      assert(wieldsSword().name === undefined,
+             "wieldSword()'s real name is " + wieldsSword().name);
+
+      assert(wieldsSword.name === '',
+             "wieldSword's real name is wieldsSword ");
+
+      /*
+      但是如果在window中声明一个属性wieldsSword，再将匿名函数赋值给wieldsSword，
+      那么此函数真正的名称依旧是最初的字面量名称。
+      如果不使用匿名函数而是经行普通函数的赋值，则能起到控制作用的依旧是函数的初始名字，见下面例子
+      很多人可能会以为将匿名函数赋值给一个属性，就相当于给函数命名。但其实不是，虽然可以使用“属性（）”的形式调用这一函数，但如果查看函数的“name”属性的话，会发现其依旧是匿名的。
+      If defined an attribute 'wieldsSword' in ouject window,then attach the anonymous function to  'wieldsSword',this time function's true name is the 
+      initial name which is ''
+      */
+
+      window.wieldsSword = function swingsSword() { return true; };  //#9
+
+      assert(wieldsSword.name === 'swingsSword',
+          "wieldSword's real name is swingsSword");
+
+
+    </script>
+  </body>
+</html>

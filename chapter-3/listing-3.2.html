@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Listing 3.2</title>
+    <meta charset="utf-8">
+    <script type="text/javascript" src="../scripts/assert.js"></script>
+    <link href="../styles/assert.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      assert(true,"|----- BEFORE OUTER -----|");          //#1
+      assert(typeof outer==='function',
+            "outer() is in scope");
+      assert(typeof inner==='function',
+            "inner() is in scope");
+      assert(typeof a==='number',
+            "a is in scope");
+      assert(typeof b==='number',
+            "b is in scope");
+      assert(typeof c==='number',
+            "c is in scope");
+
+      function outer(){
+
+        /*
+        顺带一提，在JS中，变量的作用范围不靠{（）}代码块控制。而是靠与function的关系决定。
+        In JS, a var's scope is not be set by {()},but its position with 'function'
+         */
+      
+
+      assert(true,"|----- INSIDE OUTER, BEFORE a -----|");  //#2
+      assert(typeof outer==='function',
+            "outer() is in scope");
+      assert(typeof inner==='function',
+            "inner() is in scope");
+      assert(typeof a==='number',
+            "a is in scope");
+      assert(typeof b==='number',
+            "b is in scope");
+      assert(typeof c==='number',
+            "c is in scope");
+
+      /*
+      在outer{}函数内部，inter{}函数在其内部声明，是可以提前调用的，但变量a\b\c尚未声明之前是无法调用的
+      in outer{} ,inter{} is been defined inside out{}, so it can be called before defined. But var a\b\c can not be called before defined  
+      */
+
+
+        var a = 1;
+
+        assert(true,"|----- INSIDE OUTER, AFTER a -----|");  //#3
+        assert(typeof outer==='function',
+              "outer() is in scope");
+        assert(typeof inner==='function',
+              "inner() is in scope");
+        assert(typeof a==='number',
+              "a is in scope");
+        assert(typeof b==='number',
+              "b is in scope");
+        assert(typeof c==='number',
+              "c is in scope");
+
+        function inner(){ /* does nothing */ }
+
+        var b = 2;
+
+        assert(true,"|----- INSIDE OUTER, AFTER inner() AND b -----|"); //#4
+        assert(typeof outer==='function',
+              "outer() is in scope");
+        assert(typeof inner==='function',
+              "inner() is in scope");
+        assert(typeof a==='number',
+              "a is in scope");
+        assert(typeof b==='number',
+              "b is in scope");
+        assert(typeof c==='number',
+              "c is in scope");
+
+        if (a == 1) {
+          var c = 3;
+          assert(true,"|----- INSIDE OUTER, INSIDE if -----|"); //#5
+          assert(typeof outer==='function',
+                "outer() is in scope");
+          assert(typeof inner==='function',
+                "inner() is in scope");
+          assert(typeof a==='number',
+                "a is in scope");
+          assert(typeof b==='number',
+                "b is in scope");
+          assert(typeof c==='number',
+                "c is in scope");
+        }
+
+        assert(true,"|----- INSIDE OUTER, AFTER c -----|"); //#6
+        assert(typeof outer==='function',
+              "outer() is in scope");
+        assert(typeof inner==='function',
+              "inner() is in scope");
+        assert(typeof a==='number',
+              "a is in scope");
+        assert(typeof b==='number',
+              "b is in scope");
+        assert(typeof c==='number',
+              "c is in scope");
+
+      }
+
+      outer();
+
+      assert(true,"|----- AFTER OUTER -----|"); //#7
+      assert(typeof outer==='function',
+             "outer() is in scope");
+      assert(typeof inner==='function',
+             "inner() is in scope");
+      assert(typeof a==='number',
+             "a is in scope");
+      assert(typeof b==='number',
+             "b is in scope");
+      assert(typeof c==='number',
+             "c is in scope");
+
+    </script>
+  </body>
+</html>
